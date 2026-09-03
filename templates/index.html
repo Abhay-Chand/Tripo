@@ -3,6 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07111f">
+  <title>Tripo | AI travel intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="page-bg" aria-hidden="true"><div class="grid-glow"></div><div class="route route-one"></div><div class="route route-two"></div><span class="map-node node-one"></span><span class="map-node node-two"></span><span class="map-node node-three"></span></div>
+
+  <header class="site-nav" id="siteNav">
+    <a class="wordmark" href="#top" aria-label="Tripo home"><span class="wordmark-mark">T</span>TRIPO</a>
+    <nav class="desktop-nav" aria-label="Main navigation"><a href="#planner">Plan a Trip</a><a href="#how-it-works">How It Works</a><a href="#features">Features</a><a href="#about">About</a></nav>
+    <a class="nav-cta" href="#planner">Try Tripo <span>↗</span></a>
+    <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
+  </header>
+  <nav class="mobile-nav" aria-label="Mobile navigation"><a href="#planner">Plan a Trip</a><a href="#how-it-works">How It Works</a><a href="#features">Features</a><a href="#about">About</a></nav>
+
+  <main id="top">
+    <section class="hero-section section-wrap">
+      <div class="hero-copy reveal"><div class="eyebrow"><span class="eyebrow-dot"></span> Tripo — AI travel intelligence</div><h1>From land to air,<br><em>air to ocean</em> —<br>we plan every mile.</h1><p>Plan smarter journeys with a multi-agent AI that brings destinations, routes, stays, activities, and travel logistics together.</p><div class="hero-actions"><a class="button button-primary" href="#planner">Plan my journey <span>→</span></a><a class="text-link" href="#how-it-works">See how it works <span>↓</span></a></div><div class="trust-line"><span class="pulse-dot"></span> Powered by multi-agent AI <span class="trust-divider"></span> Intelligent planning, in seconds</div></div>
+      <div class="hero-orbit" aria-hidden="true"><div class="orbit-ring ring-a"></div><div class="orbit-ring ring-b"></div><div class="orbit-label label-a">DESTINATION</div><div class="orbit-label label-b">ROUTE</div><div class="orbit-center">T<span>+</span></div></div>
+    </section>
+
+    <section class="planner-section section-wrap" id="planner">
+      <div class="section-kicker">01 / Your journey</div>
+      <div class="planner-intro"><div><h2>Where are you going?</h2><p>Tell Tripo what you're imagining. We'll handle the details.</p></div><div class="planner-status"><span class="pulse-dot"></span> Ready to plan</div></div>
+      <div class="planner-surface"><div class="input-meta"><span>TRIPO AI <i>•</i> JOURNEY BUILDER</span><span class="shortcut">Ctrl <b>↵</b></span></div><textarea id="userInput" aria-label="Describe your journey" placeholder="Plan a 7-day trip to Japan from Delhi with a focus on food, culture, and hidden gems..."></textarea><div class="input-footer"><span class="input-hint">The more you share, the more personal it becomes.</span><button id="sendBtn" class="button button-primary" onclick="sendMessage()"><span id="btnText">Generate my journey <b>→</b></span><span id="btnLoader" class="loader hidden"></span></button></div></div>
+      <div class="quick-row"><span class="quick-label">Try a direction</span><div class="quick-prompts"><button onclick="setPrompt('Plan a 7-day trip to Japan from Delhi with a focus on food, culture, and hidden gems.')">Japan <span>7 days</span></button><button onclick="setPrompt('Plan a 3-day weekend trip to Dubai with flights, hotels and experiences.')">Dubai <span>Weekend</span></button><button onclick="setPrompt('Plan a 7-day Thailand trip with beaches, local food and hidden gems.')">Thailand <span>Beaches</span></button><button onclick="setPrompt('Plan a multi-city Europe trip with flights, stays and sightseeing.')">Europe <span>Multi-city</span></button><button onclick="setPrompt('Give me all country flight info.')">Global flights <span>Explore</span></button></div></div>
+    </section>
+
+    <section id="planningState" class="planning-state section-wrap hidden" aria-live="polite"><div class="planning-heading"><div class="loader-orbit"><span></span></div><div><div class="section-kicker">Tripo AI / Live</div><h2>Planning your journey</h2><p>Specialists are working together to shape your route.</p></div></div><div class="agent-progress"><div class="agent-progress-item active"><span>01</span><b>Destination Agent</b><i>Working</i></div><div class="agent-progress-item"><span>02</span><b>Route Agent</b><i>Queued</i></div><div class="agent-progress-item"><span>03</span><b>Stay Agent</b><i>Queued</i></div><div class="agent-progress-item"><span>04</span><b>Experience Agent</b><i>Queued</i></div><div class="agent-progress-item"><span>05</span><b>Itinerary Agent</b><i>Queued</i></div></div></section>
+
+    <section id="workflowSection" class="workflow-section section-wrap hidden"><div class="section-kicker">02 / Intelligence at work</div><div class="workflow-header"><div><h2>Your planning team</h2><p id="supervisorReasoning" class="supervisor-reasoning"></p></div><span id="guardrailBadge" class="guardrail-badge">Guardrail passed</span></div><div id="agentChips" class="agent-chips"></div></section>
+
+    <section id="resultSection" class="result-section section-wrap hidden"><div class="result-header"><div><div class="section-kicker">03 / Your journey</div><h2 id="resultTitle">Your Journey</h2><p id="threadInfo">Thread ID: -</p></div><div class="result-actions"><button class="copy-btn" onclick="copyResult()">Copy plan <span>⧉</span></button><button class="download-btn" onclick="downloadPDF()">Download PDF <span>↓</span></button></div></div><div id="pdfContent" class="pdf-content"><h1 class="pdf-title">AI Travel Plan</h1><div id="resultBox" class="result-box"></div></div></section>
+
+    <section id="approvalSection" class="approval-section section-wrap hidden"><div class="approval-icon">✦</div><div class="approval-content"><span class="eyebrow">Human in the loop</span><h2>Review the draft itinerary</h2><p id="approvalRequest">Approve the draft or provide feedback before the final plan is generated.</p><textarea id="approvalFeedback" class="feedback-input" placeholder="Add revision feedback, for example: reduce the hotel cost and add one free day..."></textarea><div class="approval-actions"><button id="approveBtn" class="approve-btn" onclick="submitApproval(true)">Approve & generate final</button><button id="reviseBtn" class="revise-btn" onclick="submitApproval(false)">Revise with feedback</button></div></div></section>
+    <section id="errorBox" class="error-box hidden" role="alert"></section>
+
+    <section class="how-section section-wrap" id="how-it-works"><div class="section-kicker">The Tripo method</div><div class="split-heading"><h2>One journey.<br><em>Multiple AI agents.</em></h2><p>Travel planning is complex. Tripo gives every part of your journey a specialist, then brings their work together into one coherent plan.</p></div><div class="method-grid"><article><span>01</span><h3>Understand</h3><p>Tripo learns what matters to you, from pace and budget to the experiences you want to remember.</p></article><article><span>02</span><h3>Research</h3><p>Specialized agents gather relevant flight, stay, weather and destination intelligence.</p></article><article><span>03</span><h3>Coordinate</h3><p>Each agent shares context so every recommendation works with the rest of your route.</p></article><article><span>04</span><h3>Plan</h3><p>Your research becomes one thoughtful, ready-to-review travel plan.</p></article></div></section>
+
+    <section class="features-section section-wrap" id="features"><div class="section-kicker">Built for the whole journey</div><div class="feature-head"><h2>More than a destination.<br><em>A better way to get there.</em></h2><p>One intelligent conversation for the decisions that make a trip feel effortless.</p></div><div class="feature-list"><div><span>✧</span><b>AI-powered planning</b><p>Turn an idea into a considered itinerary.</p></div><div><span>◈</span><b>Multi-agent intelligence</b><p>Specialists collaborate behind the scenes.</p></div><div><span>⌁</span><b>Personalized itineraries</b><p>Plans shaped around your kind of travel.</p></div><div><span>↗</span><b>Route optimization</b><p>Make every mile count, from land to air.</p></div><div><span>◎</span><b>Travel research</b><p>Useful context for confident decisions.</p></div><div><span>＋</span><b>One complete journey</b><p>Flights, stays, activities and more in one place.</p></div></div></section>
+
+    <section class="closing-section section-wrap" id="about"><div class="closing-mark">T<span>+</span></div><div><div class="section-kicker">Ready when you are</div><h2>Your next journey starts<br>with a conversation.</h2><p>Tell Tripo where you want to go. We'll figure out the rest.</p><a class="button button-primary" href="#planner">Plan my journey <span>→</span></a></div></section>
+  </main>
+  <footer><a class="wordmark" href="#top"><span class="wordmark-mark">T</span>TRIPO</a><span>Intelligent travel planning, powered by AI.</span><span>© 2026 Tripo. All rights reserved.</span></footer>
+  <div id="toast" class="toast" role="status">Plan copied to clipboard</div>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script><script src="/static/script.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TripMate AI</title>
   <link rel="stylesheet" href="/static/style.css">
 </head>
