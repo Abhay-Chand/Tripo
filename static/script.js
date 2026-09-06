@@ -25,6 +25,11 @@ function setLoading(isLoading, mode = "draft") {
   approveBtn.disabled = isLoading;
   reviseBtn.disabled = isLoading;
 
+  const planningState = document.getElementById("planningState");
+  if (mode === "draft") {
+    planningState.classList.toggle("hidden", !isLoading);
+  }
+
   if (isLoading && mode === "draft") {
     btnText.classList.add("hidden");
     btnLoader.classList.remove("hidden");
@@ -94,6 +99,7 @@ function showResult(answer, threadId, isDraft = false) {
   threadInfo.textContent = `Thread ID: ${threadId}`;
   resultTitle.textContent = isDraft ? "Draft Travel Plan" : "Your Final AI Travel Plan";
   resultSection.classList.remove("hidden");
+  document.getElementById("planningState").classList.add("hidden");
 
   resultSection.scrollIntoView({
     behavior: "smooth",
@@ -232,9 +238,11 @@ function copyResult() {
       const copyBtn = document.querySelector(".copy-btn");
       const oldText = copyBtn.textContent;
       copyBtn.textContent = "Copied!";
+      document.getElementById("toast").classList.add("show");
 
       setTimeout(() => {
         copyBtn.textContent = oldText;
+        document.getElementById("toast").classList.remove("show");
       }, 1400);
     })
     .catch(() => {
@@ -293,7 +301,27 @@ function downloadPDF() {
 }
 
 document.addEventListener("keydown", function(event) {
-  if (event.ctrlKey && event.key === "Enter") {
+  if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
     sendMessage();
   }
+});
+
+const siteNav = document.getElementById("siteNav");
+const menuToggle = document.querySelector(".menu-toggle");
+const mobileNav = document.querySelector(".mobile-nav");
+
+window.addEventListener("scroll", () => {
+  siteNav.classList.toggle("scrolled", window.scrollY > 20);
+});
+
+menuToggle.addEventListener("click", () => {
+  const isOpen = mobileNav.classList.toggle("open");
+  menuToggle.setAttribute("aria-expanded", String(isOpen));
+});
+
+mobileNav.querySelectorAll("a").forEach((link) => {
+  link.addEventListener("click", () => {
+    mobileNav.classList.remove("open");
+    menuToggle.setAttribute("aria-expanded", "false");
+  });
 });
