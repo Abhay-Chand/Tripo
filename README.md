@@ -136,13 +136,13 @@ The health endpoint is available at [http://127.0.0.1:8000/health](http://127.0.
 
 ## Configuration
 
-| Variable | Required | Used by | Description |
-| --- | --- | --- | --- |
-| `GROQ_API_KEY` | Yes | `backend.py`, `mcp_client.py` | LLM access for guardrails, routing, analysis, and response generation |
-| `DATABASE_URL` | Yes | `backend.py` | PostgreSQL connection used by `PostgresSaver` for LangGraph checkpoints |
-| `TAVILY_API_KEY` | Yes for hotel research | `mcp_client.py` | Tavily MCP streamable HTTP connection |
-| `AVIATIONSTACK_API_KEY` | Yes for flight research | `mcp_client.py` | Passed to the AviationStack MCP process |
-| `OPENWEATHER_API_KEY` | Yes for weather research | `custom_weather_mcp_server.py` | Current weather and forecast requests |
+| Variable                  | Required                 | Used by                           | Description                                                              |
+| ------------------------- | ------------------------ | --------------------------------- | ------------------------------------------------------------------------ |
+| `GROQ_API_KEY`          | Yes                      | `backend.py`, `mcp_client.py` | LLM access for guardrails, routing, analysis, and response generation    |
+| `DATABASE_URL`          | Yes                      | `backend.py`                    | PostgreSQL connection used by`PostgresSaver` for LangGraph checkpoints |
+| `TAVILY_API_KEY`        | Yes for hotel research   | `mcp_client.py`                 | Tavily MCP streamable HTTP connection                                    |
+| `AVIATIONSTACK_API_KEY` | Yes for flight research  | `mcp_client.py`                 | Passed to the AviationStack MCP process                                  |
+| `OPENWEATHER_API_KEY`   | Yes for weather research | `custom_weather_mcp_server.py`  | Current weather and forecast requests                                    |
 
 Never commit `.env` files, API keys, database passwords, or generated secrets. Use a secret manager or deployment-platform environment settings in production. If a key has been exposed, revoke it and issue a replacement.
 
@@ -195,15 +195,15 @@ The response includes `success`, `thread_id`, the selected agents, extracted con
 
 Important response fields:
 
-| Field | Meaning |
-| --- | --- |
-| `thread_id` | Identifier required to resume the workflow |
-| `answer` | Draft or final text suitable for display |
-| `requires_approval` | Whether the workflow is paused for human review |
-| `itinerary` | Draft itinerary returned at the approval step |
-| `selected_agents` | Agents chosen by the supervisor |
-| `trip_constraints` | Destination, origin, duration, budget, style, and preferences |
-| `guardrail_allowed` | Whether the request passed the input guardrail |
+| Field                 | Meaning                                                       |
+| --------------------- | ------------------------------------------------------------- |
+| `thread_id`         | Identifier required to resume the workflow                    |
+| `answer`            | Draft or final text suitable for display                      |
+| `requires_approval` | Whether the workflow is paused for human review               |
+| `itinerary`         | Draft itinerary returned at the approval step                 |
+| `selected_agents`   | Agents chosen by the supervisor                               |
+| `trip_constraints`  | Destination, origin, duration, budget, style, and preferences |
+| `guardrail_allowed` | Whether the request passed the input guardrail                |
 
 ### `POST /api/travel/approve`
 
@@ -235,11 +235,11 @@ When `approved` is `false`, non-empty `feedback` is required.
 
 Tripo uses `MultiServerMCPClient` with isolated server initialization so a failure in one integration does not prevent the others from loading.
 
-| MCP server | Transport | Purpose |
-| --- | --- | --- |
-| Tavily | Streamable HTTP | Hotel and destination web research |
-| AviationStack | Local stdio via `uvx` | Airport and airline information |
-| Weather MCP | Local stdio via the current Python interpreter | Current weather and five forecast entries from OpenWeather |
+| MCP server    | Transport                                      | Purpose                                                    |
+| ------------- | ---------------------------------------------- | ---------------------------------------------------------- |
+| Tavily        | Streamable HTTP                                | Hotel and destination web research                         |
+| AviationStack | Local stdio via`uvx`                         | Airport and airline information                            |
+| Weather MCP   | Local stdio via the current Python interpreter | Current weather and five forecast entries from OpenWeather |
 
 To inspect the tools exposed by the configured servers, call `get_all_tools()` from a Python session after environment variables are configured.
 
